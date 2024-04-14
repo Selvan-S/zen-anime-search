@@ -4,17 +4,21 @@ const anime_search_form = document.querySelector("#anime-search-form");
 
 // Fetching data from Kitsu api
 async function getData(anime) {
-  const res = await fetch(
-    `https://kitsu.io/api/edge/anime?filter[text]=${anime}`,
-    {
-      method: "GET",
-    }
-  );
-  const data = await res.json();
-  renderInfo(data);
+  try {
+    const res = await fetch(
+      `https://kitsu.io/api/edge/anime?filter[text]=${anime}`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await res.json();
+    renderInfo(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-// Reandering Anime info via card
+// Rendering Anime info and display through card
 function renderInfo(data) {
   console.log(data.data[0]);
   anime_info.innerHTML = `
@@ -74,7 +78,7 @@ function renderInfo(data) {
   `;
 }
 
-// Submit
+// Handling Submit
 anime_search_form.addEventListener("submit", (e) => {
   e.preventDefault();
   let inputValue = anime_search_inp.value.trim();
@@ -88,6 +92,7 @@ anime_search_form.addEventListener("submit", (e) => {
   }
 });
 
+// Display Spinner while fetching and display the data
 function spinner() {
   return `<div class="spinner-border text-primary d-flex justify-content-center mx-auto w-full" role = "status">
     </div >`;
